@@ -48,26 +48,12 @@ readUrl("classpath://bulkQuery.graphql", "text/plain")]]]></http:body>
 	</sub-flow>
 	<sub-flow name="get-bulk-job-result" doc:id="194e0be7-85e9-420f-94f5-6e0d522a9843" >
 		<until-successful maxRetries="5" doc:name="Until Successful" doc:id="6683289a-1b9c-4b61-a119-b7fff7d1160b" millisBetweenRetries="10000">
+			<ee:transform doc:name="create graphql query" doc:id="0b12ccfc-db82-415b-be4b-5859afb0665b" >
+				<ee:message >
+					<ee:set-payload resource="checkBulkJobQuery.dwl" />
+				</ee:message>
+			</ee:transform>
 			<http:request method="POST" doc:name="check job status" doc:id="cb39f33f-6b28-43e4-9580-11d964add79f" config-ref="Shopify-Request" path="/admin/api/2021-04/graphql.json" >
-				<http:body ><![CDATA[#[output text/plain
----
-"
-{
-    node(id: \"$(vars.bulkOperationID default "")\") {
-      ... on BulkOperation {
-            id
-            status
-            errorCode
-            createdAt
-            completedAt
-            objectCount
-            fileSize
-            url
-            partialDataUrl
-        }
-    }
-}
-"]]]></http:body>
 				<http:headers ><![CDATA[#[output application/java
 ---
 {
