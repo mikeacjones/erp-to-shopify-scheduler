@@ -38,7 +38,7 @@ readUrl("classpath://bulkQuery.graphql", "text/plain")]]]></http:body>
 				<ee:set-payload resource="mapitems.dwl" />
 			</ee:message>
 		</ee:transform>
-		<batch:job jobName="erp-to-shopify-schedulerBatch_Job" doc:id="706a9f9a-4138-41c0-b999-e690da041b0e" schedulingStrategy="ROUND_ROBIN">
+		<batch:job jobName="erp-to-shopify-schedulerBatch_Job" doc:id="706a9f9a-4138-41c0-b999-e690da041b0e" schedulingStrategy="ROUND_ROBIN" blockSize="10">
 			<batch:process-records>
 				<batch:step name="Batch_Step" doc:id="2cd598a7-4bdc-4d8b-96da-21d708d3b2db" >
 					<anypoint-mq:publish doc:name="publish inventory level to queue" doc:id="cbf89077-3bf5-453d-aeec-d81a1fb0bf6e" config-ref="Anypoint_MQ_Config" destination="inventory-sync-queue"/>
