@@ -1,0 +1,8 @@
+anypoint:
+  mq:
+    client_id: ""
+    client_secret: ""
+shopify:
+  apiKey: ""
+  password: ""
+  host: ""
