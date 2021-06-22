@@ -1,0 +1,43 @@
+mutation {
+      bulkOperationRunQuery(
+          query: """
+ query MyQuery {
+  inventoryItems {
+    edges {
+      node {
+        inventoryLevels {
+          edges {
+            node {
+              item {
+                sku
+                variant {
+                  product {
+                    status
+                  }
+                }
+              }
+              location {
+                id
+              }
+              id
+              available
+            }
+          }
+        }
+        id
+      }
+    }
+  }
+}
+          """
+      ) {
+          bulkOperation {
+              id
+              status
+          }
+          userErrors {
+              field
+              message
+          }
+      }
+  }

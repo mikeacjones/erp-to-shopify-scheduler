@@ -20,50 +20,9 @@ http://www.mulesoft.org/schema/mule/anypoint-mq http://www.mulesoft.org/schema/m
 	</flow>
 	<sub-flow name="start-bulk-job" doc:id="e93fee5f-3833-4c8d-885f-1ee8160fdaf2" >
 		<http:request method="POST" doc:name="start bulk job" doc:id="80af8d3f-2055-4c5b-9320-5cfb26df1db0" path="/admin/api/2021-04/graphql.json" config-ref="Shopify-Request">
-			<http:body><![CDATA[mutation {
-      bulkOperationRunQuery(
-          query: """
- query MyQuery {
-  inventoryItems {
-    edges {
-      node {
-        inventoryLevels {
-          edges {
-            node {
-              item {
-                sku
-                variant {
-                  product {
-                    status
-                  }
-                }
-              }
-              location {
-                id
-              }
-              id
-              available
-            }
-          }
-        }
-        id
-      }
-    }
-  }
-}
-
-          """
-      ) {
-          bulkOperation {
-              id
-              status
-          }
-          userErrors {
-              field
-              message
-          }
-      }
-  }]]></http:body>
+			<http:body><![CDATA[#[output text/plain
+---
+readUrl("classpath://bulkQuery.graphql", "text/plain")]]]></http:body>
 			<http:headers><![CDATA[#[output application/java
 ---
 {
