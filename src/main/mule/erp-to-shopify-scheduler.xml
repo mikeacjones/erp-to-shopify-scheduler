@@ -77,7 +77,7 @@ readUrl("classpath://bulkQuery.graphql", "text/plain")]]]></http:body>
 			<validation:is-true
 				doc:name="validate the job has completed"
 				doc:id="fe7406e3-b055-47e6-b517-455012686415"
-				expression='#[payload.data.node.status == "COMPLETED"]' />
+				expression='#[payload.data.node.status == "COMPLETED"]' message="BATCH JOB HAS NOT COMPLETED - WAIT 10 SECONDS"/>
 			<set-variable value="#[payload.data.node.url]"
 				doc:name="Set bulkResultURL"
 				doc:id="6c0c1b29-de83-46bc-a6cf-06419ce9474a"
