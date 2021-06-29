@@ -1,122 +1,108 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<mule xmlns:anypoint-mq="http://www.mulesoft.org/schema/mule/anypoint-mq" xmlns:batch="http://www.mulesoft.org/schema/mule/batch"
+<mule
+	xmlns:productss-api="http://www.mulesoft.org/schema/mule/productss-api"
+	xmlns:anypoint-mq="http://www.mulesoft.org/schema/mule/anypoint-mq"
+	xmlns:batch="http://www.mulesoft.org/schema/mule/batch"
 	xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
-	xmlns:validation="http://www.mulesoft.org/schema/mule/validation" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+	xmlns:validation="http://www.mulesoft.org/schema/mule/validation"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
 http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
 http://www.mulesoft.org/schema/mule/validation http://www.mulesoft.org/schema/mule/validation/current/mule-validation.xsd
 http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
 http://www.mulesoft.org/schema/mule/batch http://www.mulesoft.org/schema/mule/batch/current/mule-batch.xsd
-http://www.mulesoft.org/schema/mule/anypoint-mq http://www.mulesoft.org/schema/mule/anypoint-mq/current/mule-anypoint-mq.xsd">
-	<flow name="erp-to-shopify-schedulerFlow" doc:id="afd7603a-5823-44e8-b3d6-485dcfaab51e" >
-		<scheduler doc:name="Scheduler" doc:id="a66d7d83-1225-4a4e-980e-3190c322e26e" >
-			<scheduling-strategy >
-				<fixed-frequency frequency="1" timeUnit="HOURS"/>
+http://www.mulesoft.org/schema/mule/anypoint-mq http://www.mulesoft.org/schema/mule/anypoint-mq/current/mule-anypoint-mq.xsd
+http://www.mulesoft.org/schema/mule/productss-api http://www.mulesoft.org/schema/mule/productss-api/current/mule-productss-api.xsd">
+	<flow name="erp-to-shopify-schedulerFlow"
+		doc:id="afd7603a-5823-44e8-b3d6-485dcfaab51e">
+		<scheduler doc:name="Scheduler"
+			doc:id="a66d7d83-1225-4a4e-980e-3190c322e26e">
+			<scheduling-strategy>
+				<fixed-frequency frequency="1" timeUnit="HOURS" />
 			</scheduling-strategy>
 		</scheduler>
-		<flow-ref doc:name="start-bulk-job" doc:id="9f8ac677-5737-49d3-9852-2d7d3b7d2b60" name="start-bulk-job"/>
-		<flow-ref doc:name="get-bulk-job-result" doc:id="720cf04b-8202-4217-b48c-6ea030aa032d" name="get-bulk-job-result"/>
-		<flow-ref doc:name="process-items" doc:id="e9f64a1e-bd6b-43fc-8462-89914ed38701" name="process-items"/>
+		<flow-ref doc:name="start-bulk-job"
+			doc:id="9f8ac677-5737-49d3-9852-2d7d3b7d2b60" name="start-bulk-job" />
+		<flow-ref doc:name="get-bulk-job-result"
+			doc:id="720cf04b-8202-4217-b48c-6ea030aa032d"
+			name="get-bulk-job-result" />
+		<flow-ref doc:name="process-items"
+			doc:id="e9f64a1e-bd6b-43fc-8462-89914ed38701" name="process-items" />
 	</flow>
-	<sub-flow name="start-bulk-job" doc:id="e93fee5f-3833-4c8d-885f-1ee8160fdaf2" >
-		<http:request method="POST" doc:name="start bulk job" doc:id="80af8d3f-2055-4c5b-9320-5cfb26df1db0" path="/admin/api/2021-04/graphql.json" config-ref="Shopify-Request">
-			<http:body><![CDATA[mutation {
-      bulkOperationRunQuery(
-          query: """
- query MyQuery {
-  inventoryItems {
-    edges {
-      node {
-        inventoryLevels {
-          edges {
-            node {
-              item {
-                sku
-                variant {
-                  product {
-                    status
-                  }
-                }
-              }
-              location {
-                id
-              }
-              id
-              available
-            }
-          }
-        }
-        id
-      }
-    }
-  }
-}
-
-          """
-      ) {
-          bulkOperation {
-              id
-              status
-          }
-          userErrors {
-              field
-              message
-          }
-      }
-  }]]></http:body>
+	<sub-flow name="start-bulk-job"
+		doc:id="e93fee5f-3833-4c8d-885f-1ee8160fdaf2">
+		<http:request method="POST" doc:name="start bulk job"
+			doc:id="80af8d3f-2055-4c5b-9320-5cfb26df1db0"
+			path="/admin/api/2021-04/graphql.json" config-ref="Shopify-Request">
+			<http:body><![CDATA[#[output text/plain
+---
+readUrl("classpath://bulkQuery.graphql", "text/plain")]]]></http:body>
 			<http:headers><![CDATA[#[output application/java
 ---
 {
 	"Content-Type" : "application/graphql"
 }]]]></http:headers>
 		</http:request>
-		<set-variable value="#[payload.data.bulkOperationRunQuery.bulkOperation.id]" doc:name="set bulkOperationID" doc:id="b581865a-3f87-44ed-b72a-6b57c3b3353b" variableName="bulkOperationID"/>
+		<set-variable
+			value="#[payload.data.bulkOperationRunQuery.bulkOperation.id]"
+			doc:name="set bulkOperationID"
+			doc:id="b581865a-3f87-44ed-b72a-6b57c3b3353b"
+			variableName="bulkOperationID" />
 	</sub-flow>
-	<sub-flow name="process-items" doc:id="4df00dbd-2030-4c08-a20a-fa13682c7a19">
-		<http:request method="GET" doc:name="stream ndjson results file" doc:id="13940c1d-68fb-4e3d-8c0b-359cd8bfc7bb" url="#[vars.bulkResultURL]" followRedirects="true" requestStreamingMode="ALWAYS" outputMimeType="application/x-ndjson; streaming=true"/>
-		<ee:transform doc:name="filter items for active" doc:id="875b500d-a8ea-441b-9f26-acb4ede3b989">
-			<ee:message>
-				<ee:set-payload resource="mapitems.dwl" />
-			</ee:message>
-		</ee:transform>
-		<batch:job jobName="erp-to-shopify-schedulerBatch_Job" doc:id="706a9f9a-4138-41c0-b999-e690da041b0e" schedulingStrategy="ROUND_ROBIN">
-			<batch:process-records>
-				<batch:step name="Batch_Step" doc:id="2cd598a7-4bdc-4d8b-96da-21d708d3b2db" >
-					<anypoint-mq:publish doc:name="publish inventory level to queue" doc:id="cbf89077-3bf5-453d-aeec-d81a1fb0bf6e" config-ref="Anypoint_MQ_Config" destination="inventory-sync-queue"/>
-				</batch:step>
-			</batch:process-records>
-		</batch:job>
-	</sub-flow>
-	<sub-flow name="get-bulk-job-result" doc:id="194e0be7-85e9-420f-94f5-6e0d522a9843" >
-		<until-successful maxRetries="5" doc:name="Until Successful" doc:id="6683289a-1b9c-4b61-a119-b7fff7d1160b" millisBetweenRetries="10000">
-			<http:request method="POST" doc:name="check job status" doc:id="cb39f33f-6b28-43e4-9580-11d964add79f" config-ref="Shopify-Request" path="/admin/api/2021-04/graphql.json" >
-				<http:body ><![CDATA[#[output text/plain
----
-"
-{
-    node(id: \"$(vars.bulkOperationID default "")\") {
-      ... on BulkOperation {
-            id
-            status
-            errorCode
-            createdAt
-            completedAt
-            objectCount
-            fileSize
-            url
-            partialDataUrl
-        }
-    }
-}
-"]]]></http:body>
-				<http:headers ><![CDATA[#[output application/java
+	<sub-flow name="get-bulk-job-result"
+		doc:id="194e0be7-85e9-420f-94f5-6e0d522a9843">
+		<until-successful maxRetries="5"
+			doc:name="Until Successful"
+			doc:id="6683289a-1b9c-4b61-a119-b7fff7d1160b"
+			millisBetweenRetries="10000">
+			<ee:transform doc:name="create graphql query"
+				doc:id="0b12ccfc-db82-415b-be4b-5859afb0665b">
+				<ee:message>
+					<ee:set-payload resource="checkBulkJobQuery.dwl" />
+				</ee:message>
+			</ee:transform>
+			<http:request method="POST" doc:name="check job status"
+				doc:id="cb39f33f-6b28-43e4-9580-11d964add79f"
+				config-ref="Shopify-Request" path="/admin/api/2021-04/graphql.json">
+				<http:headers><![CDATA[#[output application/java
 ---
 {
 	"Content-Type" : "application/graphql"
 }]]]></http:headers>
 			</http:request>
-			<validation:is-true doc:name="validate the job has completed" doc:id="fe7406e3-b055-47e6-b517-455012686415" expression='#[payload.data.node.status == "COMPLETED"]'/>
-			<set-variable value="#[payload.data.node.url]" doc:name="Set bulkResultURL" doc:id="6c0c1b29-de83-46bc-a6cf-06419ce9474a" variableName="bulkResultURL"/>
+			<validation:is-true
+				doc:name="validate the job has completed"
+				doc:id="fe7406e3-b055-47e6-b517-455012686415"
+				expression='#[payload.data.node.status == "COMPLETED"]' message="BATCH JOB HAS NOT COMPLETED - WAIT 10 SECONDS"/>
+			<set-variable value="#[payload.data.node.url]"
+				doc:name="Set bulkResultURL"
+				doc:id="6c0c1b29-de83-46bc-a6cf-06419ce9474a"
+				variableName="bulkResultURL" />
 		</until-successful>
+	</sub-flow>
+	<sub-flow name="process-items"
+		doc:id="4df00dbd-2030-4c08-a20a-fa13682c7a19">
+		<http:request method="GET"
+			doc:name="stream ndjson results file"
+			doc:id="13940c1d-68fb-4e3d-8c0b-359cd8bfc7bb"
+			url="#[vars.bulkResultURL]" followRedirects="true"
+			requestStreamingMode="ALWAYS"
+			outputMimeType="application/x-ndjson; streaming=true" />
+		<ee:transform doc:name="create item map"
+			doc:id="875b500d-a8ea-441b-9f26-acb4ede3b989">
+			<ee:message>
+				<ee:set-payload resource="mapitems.dwl" />
+			</ee:message>
+		</ee:transform>
+		<parallel-foreach doc:name="Parallel For Each"
+			doc:id="253fd960-28a8-4969-8e3c-c4ba46351fd7" collection="#[payload]">
+			<anypoint-mq:publish doc:name="Publish"
+				doc:id="8cbf3ce8-b094-420b-9a9f-4687dfe02727"
+				config-ref="Anypoint_MQ_Config" destination="inventory-sync-queue" />
+		</parallel-foreach>
 	</sub-flow>
 </mule>

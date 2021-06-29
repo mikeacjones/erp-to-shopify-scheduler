@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:munit="http://www.mulesoft.org/schema/mule/munit" xmlns:munit-tools="http://www.mulesoft.org/schema/mule/munit-tools"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xsi:schemaLocation="
+		http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+		http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
+		http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd">
+	<munit:config name="new-test-suite.xml" />
+	<munit:test name="test-start-bulk-job" doc:id="487ab401-9b03-465b-89ab-a9cb6ba816b7" description="Test the start bulk job flow" tags="shopify,bulk job">
+		<munit:enable-flow-sources >
+			<munit:enable-flow-source value="erp-to-shopify-schedulerFlow" />
+		</munit:enable-flow-sources>
+		<munit:behavior>
+			<munit-tools:mock-when doc:name="Mock when" doc:id="df16f865-f552-4705-bf70-939546194ac0" processor="http:request">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="POST" attributeName="method" />
+					<munit-tools:with-attribute whereValue="start bulk job" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="80af8d3f-2055-4c5b-9320-5cfb26df1db0" attributeName="doc:id" />
+					<munit-tools:with-attribute whereValue="/admin/api/2021-04/graphql.json" attributeName="path" />
+					<munit-tools:with-attribute whereValue="Shopify-Request" attributeName="config-ref" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[output application/json --- readUrl('classpath://mockPayloads/mockResultBulkJobStart.dwl')]" mediaType="application/json" encoding="UTF-8" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to erp-to-shopify-schedulerFlow" doc:id="839ec7f6-e129-40a2-90be-79dd4d52af3c" name="start-bulk-job"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-that doc:name="Assert that" doc:id="224534e7-0ec1-4b96-a807-b1bdfaf95ff8" is="#[MunitTools::notNullValue()]" expression="#[!isEmpty(vars.bulkOperationID)]"/>
+		</munit:validation>
+	</munit:test>
+
+</mule>
