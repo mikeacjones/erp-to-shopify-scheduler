@@ -1,8 +1,8 @@
-name: Build and Deploy - Sandbox
+name: Build and Deploy - Production
 
 on:
   push:
-    branches: [sandbox]
+    branches: [production]
 
 jobs:
   build:
