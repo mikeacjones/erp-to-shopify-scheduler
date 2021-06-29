@@ -11,17 +11,17 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
       - name: Build mule application
-        run: mvn -B package -s .maven/settings.xml
+        run: mvn -B package -s .maven/settings.xml -Dshopify.username=$SHOPIFY_USERNAME -Dshopify.password=$SHOPIFY_PASSWORD -Dshopify.host=$SHOPIFY_HOST -Danypoint.mq.client_id=$ANYPOINT_MQ_CLIENT_ID -Danypoint.mq.client_secret=$ANYPOINT_MQ_CLIENT_SECRET
         env:
           NEXUS_USERNAME: ${{ secrets.NEXUS_USERNAME }}
           NEXUS_PASSWORD: ${{ secrets.NEXUS_PASSWORD }}
           PLATFORM_USERNAME: ${{ secrets.PLATFORM_USERNAME }}
           PLATFORM_PASSWORD: ${{ secrets.PLATFORM_PASSWORD }}
-          shopify.username: ${{ secrets.SHOPIFY_USERNAME }}
-          shopify.password:  ${{ secrets.SHOPIFY_PASSWORD }}
-          shopify.host: ${{ secrets.SHOPIFY_HOST }}
-          anypoint.mq.client_id: ${{ secrets.ANYPOINT_MQ_CLIENT_ID }}
-          anypoint.mq.client_secret: ${{ secrets.ANYPOINT_MQ_CLIENT_SECRET }}
+          SHOPIFY_USERNAME: ${{ secrets.SHOPIFY_USERNAME }}
+          SHOPIFY_PASSWORD:  ${{ secrets.SHOPIFY_PASSWORD }}
+          SHOPIFY_HOST: ${{ secrets.SHOPIFY_HOST }}
+          ANYPOINT_MQ_CLIENT_ID: ${{ secrets.ANYPOINT_MQ_CLIENT_ID }}
+          ANYPOINT_MQ_CLIENT_SECRET: ${{ secrets.ANYPOINT_MQ_CLIENT_SECRET }}
       - name: Publish test report
         uses: scacap/action-surefire-report@v1
         with:
