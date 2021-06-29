@@ -31,7 +31,7 @@ jobs:
         uses: scacap/action-surefire-report@v1
         with:
           report_paths: '**/target/surefire-reports/TEST-*.xml'
-      - run: mkdir staging && cp target/*.jar staging
+      - run: mkdir production && cp target/*.jar staging
       - uses: actions/upload-artifact@v2
         with:
           name: Package
