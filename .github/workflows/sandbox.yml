@@ -8,26 +8,8 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
-      - name: Build mule application
-        run: mvn -B package -s .maven/settings.xml -Dshopify.username=$SHOPIFY_USERNAME -Dshopify.password=$SHOPIFY_PASSWORD -Dshopify.host=$SHOPIFY_HOST -Danypoint.mq.client_id=$ANYPOINT_MQ_CLIENT_ID -Danypoint.mq.client_secret=$ANYPOINT_MQ_CLIENT_SECRET
-        env:
-          NEXUS_USERNAME: ${{ secrets.NEXUS_USERNAME }}
-          NEXUS_PASSWORD: ${{ secrets.NEXUS_PASSWORD }}
-          PLATFORM_USERNAME: ${{ secrets.PLATFORM_USERNAME }}
-          PLATFORM_PASSWORD: ${{ secrets.PLATFORM_PASSWORD }}
-          SHOPIFY_USERNAME: ${{ secrets.SHOPIFY_USERNAME }}
-          SHOPIFY_PASSWORD:  ${{ secrets.SHOPIFY_PASSWORD }}
-          SHOPIFY_HOST: ${{ secrets.SHOPIFY_HOST }}
-          ANYPOINT_MQ_CLIENT_ID: ${{ secrets.ANYPOINT_MQ_CLIENT_ID }}
-          ANYPOINT_MQ_CLIENT_SECRET: ${{ secrets.ANYPOINT_MQ_CLIENT_SECRET }}
-      - name: Publish test report
-        uses: scacap/action-surefire-report@v1
-        with:
-          report_paths: '**/target/surefire-reports/TEST-*.xml'
       - name: Deploy mule application to CloudHub environment Sandbox
-        run: mvn -B deploy -DmuleDeploy -s .maven/settings.xml
+        run: mvn -B deploy -DmuleDeploy -s .maven/settings.xml -Dshopify.username=$SHOPIFY_USERNAME -Dshopify.password=$SHOPIFY_PASSWORD -Dshopify.host=$SHOPIFY_HOST -Danypoint.mq.client_id=$ANYPOINT_MQ_CLIENT_ID -Danypoint.mq.client_secret=$ANYPOINT_MQ_CLIENT_SECRET
         env:
           NEXUS_USERNAME: ${{ secrets.NEXUS_USERNAME }}
           NEXUS_PASSWORD: ${{ secrets.NEXUS_PASSWORD }}
@@ -43,3 +25,7 @@ jobs:
           SHOPIFY_HOST: ${{ secrets.SHOPIFY_HOST }}
           ANYPOINT_MQ_CLIENT_ID: ${{ secrets.ANYPOINT_MQ_CLIENT_ID }}
           ANYPOINT_MQ_CLIENT_SECRET: ${{ secrets.ANYPOINT_MQ_CLIENT_SECRET }}
+      - name: Publish test report
+        uses: scacap/action-surefire-report@v1
+        with:
+          report_paths: '**/target/surefire-reports/TEST-*.xml'
