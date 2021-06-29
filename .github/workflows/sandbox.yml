@@ -29,8 +29,8 @@ jobs:
           PLATFORM_CLIENT_SECRET: ${{ secrets.PLATFORM_CLIENT_SECRET }}
           APP_NAME: sandbox-erp-to-shopify-scheduler-v1
           PLATFORM_ENV: Sandbox
-	  SHOPIFY_USERNAME: ${{ secrets.SHOPIFY_USERNAME }}
-	  SHOPIFY_PASSWORD:  ${{ secrets.SHOPIFY_PASSWORD }}
- 	  SHOPIFY_HOST: ${{ secrets.SHOPIFY_HOST }}
-	  ANYPOINT_MQ_CLIENT_ID: ${{ secrets.ANYPOINT_MQ_CLIENT_ID }}
+          SHOPIFY_USERNAME: ${{ secrets.SHOPIFY_USERNAME }}
+          SHOPIFY_PASSWORD:  ${{ secrets.SHOPIFY_PASSWORD }}
+          SHOPIFY_HOST: ${{ secrets.SHOPIFY_HOST }}
+          ANYPOINT_MQ_CLIENT_ID: ${{ secrets.ANYPOINT_MQ_CLIENT_ID }}
           ANYPOINT_MQ_CLIENT_SECRET: ${{ secrets.ANYPOINT_MQ_CLIENT_SECRET }}
