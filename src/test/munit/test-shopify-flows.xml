@@ -8,7 +8,7 @@
 		http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
 		http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd">
 	<munit:config name="new-test-suite.xml" />
-	<munit:test name="test-start-bulk-job" doc:id="487ab401-9b03-465b-89ab-a9cb6ba816b7" description="Test the start bulk job flow">
+	<munit:test name="test-start-bulk-job" doc:id="487ab401-9b03-465b-89ab-a9cb6ba816b7" description="Test the start bulk job flow" tags="shopify,bulk job">
 		<munit:enable-flow-sources >
 			<munit:enable-flow-source value="erp-to-shopify-schedulerFlow" />
 		</munit:enable-flow-sources>
