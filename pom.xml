@@ -31,6 +31,27 @@
 				<extensions>true</extensions>
 				<configuration>
 					<classifier>mule-application</classifier>
+					<cloudHubDeployment>
+						<muleVersion>4.3.0</muleVersion>
+						<username>${env.PLATFORM_USERNAME}</username>
+						<password>${env.PLATFORM_PASSWORD}</password>
+						<applicationName>${env.APP_NAME}</applicationName>
+						<environment>${env.PLATFORM_ENV}</environment>
+						<workers>1</workers>
+						<workerType>MICRO</workerType>
+						<objectStoreV2>true</objectStoreV2>
+						<region>us-east-2</region>
+						<businessGroupId>${env.BUSINESS_GROUP_ID}</businessGroupId>
+						<properties>
+							<anypoint.platform.client_id>${env.PLATFORM_CLIENT_ID}</anypoint.platform.client_id>
+							<anypoint.platform.client_secret>${env.PLATFORM_CLIENT_SECRET}</anypoint.platform.client_secret>
+							<anypoint.mq.client_id>${env.ANYPOINT_MQ_CLIENT_ID}</anypoint.mq.client_id>
+							<anypoint.mq.client_secret>${env.ANYPOINT_MQ_CLIENT_SECRET}</anypoint.mq.client_secret>
+							<shopify.username>${SHOPIFY_USERNAME}</shopify.username>
+							<shopify.password>${SHOPIFY_PASSWORD}</shopify.password>
+							<shopify.host>${SHOPIFY_HOST}</shopify.host>
+						</properties>
+					</cloudHubDeployment>
 				</configuration>
 			</plugin>
 		</plugins>
