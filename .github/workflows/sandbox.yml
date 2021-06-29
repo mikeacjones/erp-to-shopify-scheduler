@@ -8,6 +8,8 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
       - name: Deploy mule application to CloudHub environment Sandbox
         run: mvn -B deploy -DmuleDeploy -s .maven/settings.xml -Dshopify.username=$SHOPIFY_USERNAME -Dshopify.password=$SHOPIFY_PASSWORD -Dshopify.host=$SHOPIFY_HOST -Danypoint.mq.client_id=$ANYPOINT_MQ_CLIENT_ID -Danypoint.mq.client_secret=$ANYPOINT_MQ_CLIENT_SECRET
         env:
