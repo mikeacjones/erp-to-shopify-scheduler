@@ -48,7 +48,7 @@ readUrl("classpath://bulkQuery.graphql", "text/plain")]]]></http:body>
 }]]]></http:headers>
 		</http:request>
 		<set-variable
-			value="#[payload.data.bulkOperationRunQuery.bulkOperation.idd]"
+			value="#[payload.data.bulkOperationRunQuery.bulkOperation.id]"
 			doc:name="set bulkOperationID"
 			doc:id="b581865a-3f87-44ed-b72a-6b57c3b3353b"
 			variableName="bulkOperationID" />
