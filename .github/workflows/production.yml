@@ -28,10 +28,11 @@ jobs:
           ANYPOINT_MQ_CLIENT_ID: ${{ secrets.ANYPOINT_MQ_CLIENT_ID }}
           ANYPOINT_MQ_CLIENT_SECRET: ${{ secrets.ANYPOINT_MQ_CLIENT_SECRET }}
       - name: Publish test report
+        if: ${{ always() }}
         uses: scacap/action-surefire-report@v1
         with:
           report_paths: '**/target/surefire-reports/TEST-*.xml'
-      - run: mkdir staging && cp target/*.jar staging
+      - run: mkdir production && cp target/*.jar staging
       - uses: actions/upload-artifact@v2
         with:
           name: Package
