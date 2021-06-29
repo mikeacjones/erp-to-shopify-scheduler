@@ -17,9 +17,14 @@ jobs:
           NEXUS_PASSWORD: ${{ secrets.NEXUS_PASSWORD }}
           PLATFORM_USERNAME: ${{ secrets.PLATFORM_USERNAME }}
           PLATFORM_PASSWORD: ${{ secrets.PLATFORM_PASSWORD }}
+          shopify.username: ${{ secrets.SHOPIFY_USERNAME }}
+          shopify.password:  ${{ secrets.SHOPIFY_PASSWORD }}
+          shopify.host: ${{ secrets.SHOPIFY_HOST }}
+          anypoint.mq.client_id: ${{ secrets.ANYPOINT_MQ_CLIENT_ID }}
+          anypoint.mq.client_secret: ${{ secrets.ANYPOINT_MQ_CLIENT_SECRET }}
       - name: Publish test report
-          uses: scacap/action-surefire-report@v1
-          report_paths: '**/target/surefire-reports/TEST-*.xml'
+        uses: scacap/action-surefire-report@v1
+        report_paths: '**/target/surefire-reports/TEST-*.xml'
       - name: Deploy mule application to CloudHub environment Sandbox
         run: mvn -B deploy -DmuleDeploy -s .maven/settings.xml
         env:
