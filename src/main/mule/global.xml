@@ -16,5 +16,4 @@ http://www.mulesoft.org/schema/mule/productss-api http://www.mulesoft.org/schema
 	<anypoint-mq:config name="Anypoint_MQ_Config" doc:name="Anypoint MQ Config" doc:id="294369b2-52f2-4145-916e-e67a08661e95" >
 		<anypoint-mq:connection clientId="${anypoint.mq.client_id}" clientSecret="${anypoint.mq.client_secret}" />
 	</anypoint-mq:config>
-	<productss-api:config name="Products_sAPI_Config" doc:name="Products sAPI Config" doc:id="5fe0920c-34cf-469a-ab20-4c9ac7f1cd39" property_authorization="Bearer ${erp.token}" property_host="${erp.host}" />
 </mule>
